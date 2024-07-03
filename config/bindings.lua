@@ -13,6 +13,13 @@ elseif platform.is_win or platform.is_linux then
   mod.SUPER_REV = 'ALT|CTRL'
 end
 
+local keys = {
+  { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
+
+  -- tabs --
+  { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({confirm = false})},
+}
+
 -- local c = {}
 -- -- 取消所有默认的热键
 -- c.disable_default_key_bindings = true
@@ -53,4 +60,5 @@ end
 return {
   disable_default_key_bindings = true,
   leader = { key = 'Space', mods = mod.SUPER_REV },
+  keys = keys,
 }
