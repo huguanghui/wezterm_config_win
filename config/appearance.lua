@@ -9,12 +9,12 @@ return {
   -- webgpu_preferred_adapter = gpu_adapters:pick_best(),
 
   -- color scheme
-  colors =  colors,
+  colors = colors,
 
   -- background
   background = {
     {
-      source = {File = wezterm.GLOBAL.background},
+      source = { File = wezterm.GLOBAL.background },
       horizontal_align = 'Center',
     },
     {
@@ -40,7 +40,7 @@ return {
   window_padding = {
     left = 5,
     right = 10,
-    top = 12, 
+    top = 12,
     bottom = 7,
   },
   window_close_confirmation = 'NeverPrompt',

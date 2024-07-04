@@ -14,10 +14,10 @@ elseif platform.is_win or platform.is_linux then
 end
 
 local keys = {
-  { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
+  { key = 'F11', mods = 'NONE',        action = act.ToggleFullScreen },
 
   -- tabs --
-  { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({confirm = false})},
+  { key = 'w',   mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 }
 
 -- local c = {}

@@ -8,7 +8,7 @@ Config.__index = Config
 ---Initialize Config
 ---@return Config
 function Config:init()
-  local config = setmetatable({options={}}, self)
+  local config = setmetatable({ options = {} }, self)
   return config
 end
 
@@ -18,7 +18,7 @@ end
 function Config:append(new_options)
   for k, v in pairs(new_options) do
     if self.options[k] ~= nil then
-      wezterm.log_warn('Duplicate config option detected: ', 
+      wezterm.log_warn('Duplicate config option detected: ',
         { old = self.options[k], new = new_options[k] }
       )
       goto continue

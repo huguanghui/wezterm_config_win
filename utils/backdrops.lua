@@ -31,7 +31,6 @@ function BackDrops:init()
   return backdrops
 end
 
-
 --- MUST BE RUN BEFORE ALL OTHER `BackDrops` functions
 --- Sets the `files` after instanntiating `BackDrops`.
 ---
@@ -50,7 +49,7 @@ function BackDrops:_set_opt(window)
   local opts = {
     background = {
       {
-        source = {File = wezterm.GLOBAL.background},
+        source = { File = wezterm.GLOBAL.background },
         horizontal_align = 'Center',
       },
       {
@@ -67,7 +66,7 @@ end
 function BackDrops:choices()
   local choices = {}
   for idx, file in ipairs(self.files) do
-    local name = file:match('([^' .. PATH_SEP ..'] +)$')
+    local name = file:match('([^' .. PATH_SEP .. '] +)$')
     table.insert(choices, {
       id = tostring(idx),
       label = name,

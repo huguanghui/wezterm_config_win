@@ -78,7 +78,7 @@ local colorscheme = {
       bg_color = mocha.mantle,
       fg_color = mocha.text,
       italic = true,
-    } 
+    }
   },
   visual_bell = mocha.surface0,
   indexed = {
