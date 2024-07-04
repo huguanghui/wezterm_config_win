@@ -14,6 +14,9 @@ elseif platform.is_win or platform.is_linux then
 end
 
 local keys = {
+  { key = 'F2',  mods = 'NONE',        action = act.ActivateCommandPalette },
+  { key = 'F3',  mods = 'NONE',        action = act.ShowLauncher },
+  { key = 'F4',  mods = 'NONE',        action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
   { key = 'F11', mods = 'NONE',        action = act.ToggleFullScreen },
 
   -- tabs --
