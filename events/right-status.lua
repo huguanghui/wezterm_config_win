@@ -81,6 +81,7 @@ local _set_battery = function()
 end
 
 M.setup = function()
+---@diagnostic disable-next-line: unused-local
   wezterm.on('update-right-status', function(window, _pane)
     __cells__ = {}
     _set_date()

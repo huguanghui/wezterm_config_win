@@ -23,6 +23,7 @@ local _push = function(text, fg, bg)
 end
 
 M.setup = function()
+---@diagnostic disable-next-line: unused-local
   wezterm.on('update-right-status', function(window, _pane)
     __cells__ = {}
 

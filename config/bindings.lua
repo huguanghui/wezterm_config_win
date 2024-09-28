@@ -95,6 +95,14 @@ local keys = {
   },
 }
 
+for i = 1, 9 do
+  table.insert(keys, {
+    key = tostring(i),
+    mods = mod.SUPER_REV,
+    action = act.ActivateTab(i - 1),
+  })
+end
+
 -- local c = {}
 -- -- 取消所有默认的热键
 -- c.disable_default_key_bindings = true
@@ -163,7 +171,7 @@ local mouse_bindings = {
 return {
   disable_default_key_bindings = true,
   disable_default_mouse_bindings = true,
-  leader = { key = 'Space', mods = mod.SUPER_REV },
+  leader = { key = 'Space', mods = mod.SUPER_REV, timemout_miliseconds = 2000 },
   keys = keys,
   key_tables = key_tables,
   mouse_bindings = mouse_bindings,
