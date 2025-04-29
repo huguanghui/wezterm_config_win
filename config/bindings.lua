@@ -13,6 +13,33 @@ elseif platform.is_win or platform.is_linux then
   mod.SUPER_REV = 'ALT|CTRL'
 end
 
+-- 定义宏函数（带延迟）
+local function telnet_login(window, pane)
+  -- 打开 Telnet
+  -- window:perform_action(
+  --   wezterm.action.SplitVertical {
+  --     args = { "telnet", "192.168.3.216 9009" },
+  --   },
+  --   pane
+  -- )
+
+  -- 延迟 1 秒后输入用户名
+  wezterm.time.call_after(1, function()
+    window:perform_action(
+      wezterm.action.SendString "root\r",
+      pane
+    )
+  end)
+
+  -- 延迟 2 秒后输入密码
+  wezterm.time.call_after(2, function()
+    window:perform_action(
+      wezterm.action.SendString "PQkKGd3C5#\r",
+      pane
+    )
+  end)
+end
+
 local keys = {
   { key = 'F1',         mods = 'NONE',        action = 'ActivateCopyMode' },
   { key = 'F2',         mods = 'NONE',        action = act.ActivateCommandPalette },
@@ -92,6 +119,12 @@ local keys = {
       one_shot = false,
       timemout_miliseconds = 1000,
     }),
+  },
+  -- new telnet
+  {
+    key = "T",
+    mods = mod.SUPER_REV,
+    action = wezterm.action_callback(telnet_login),
   },
 }
 
