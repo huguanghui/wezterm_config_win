@@ -3,11 +3,12 @@ local gpu_adapters = require('utils.gpu_adapter')
 local colors = require('colors.custom')
 
 return {
-  animation_fps = 60,
-  max_fps = 60,
   front_end = 'WebGpu',
-  webgpu_power_preference = 'HighPerformance',
   webgpu_preferred_adapter = gpu_adapters:pick_best(),
+  webgpu_power_preference = 'HighPerformance',
+
+  animation_fps = 60,
+  cursor_blink_rate = 0,
 
   -- color scheme
   colors = colors,
@@ -22,7 +23,9 @@ return {
       source = { Color = colors.background },
       height = '100%',
       width = '100%',
-      opacity = 0.96,
+      opacity = 0.85,
+      vertical_align = 'Bottom',
+      h_bilinear = true,
     },
   },
 
