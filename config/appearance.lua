@@ -25,7 +25,6 @@ return {
       width = '100%',
       opacity = 0.85,
       vertical_align = 'Bottom',
-      h_bilinear = true,
     },
   },
 
