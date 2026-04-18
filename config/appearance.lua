@@ -3,7 +3,7 @@ local gpu_adapters = require('utils.gpu_adapter')
 local colors = require('colors.custom')
 
 return {
-  front_end = 'WebGpu',
+  front_end = 'OpenGL', -- WebGpu,OpenGL
   webgpu_preferred_adapter = gpu_adapters:pick_best(),
   webgpu_power_preference = 'HighPerformance',
 
