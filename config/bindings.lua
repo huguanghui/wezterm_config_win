@@ -6,134 +6,136 @@ local act = wezterm.action
 local mod = {}
 
 if platform.is_mac then
-  mod.SUPER = 'SUPER'
-  mod.SUPER_REV = 'SUPER|CTRL'
+   mod.SUPER = 'SUPER'
+   mod.SUPER_REV = 'SUPER|CTRL'
 elseif platform.is_win or platform.is_linux then
-  mod.SUPER = 'ALT'
-  mod.SUPER_REV = 'ALT|CTRL'
+   mod.SUPER = 'ALT'
+   mod.SUPER_REV = 'ALT|CTRL'
 end
 
 -- 定义宏函数（带延迟）
 local function telnet_login(window, pane)
-  -- 打开 Telnet
-  -- window:perform_action(
-  --   wezterm.action.SplitVertical {
-  --     args = { "telnet", "192.168.3.216 9009" },
-  --   },
-  --   pane
-  -- )
+   -- 打开 Telnet
+   -- window:perform_action(
+   --   wezterm.action.SplitVertical {
+   --     args = { "telnet", "192.168.3.216 9009" },
+   --   },
+   --   pane
+   -- )
 
-  -- 延迟 1 秒后输入用户名
-  wezterm.time.call_after(1, function()
-    window:perform_action(
-      wezterm.action.SendString "root\r",
-      pane
-    )
-  end)
+   -- 延迟 1 秒后输入用户名
+   wezterm.time.call_after(1, function()
+      window:perform_action(wezterm.action.SendString('root\r'), pane)
+   end)
 
-  -- 延迟 2 秒后输入密码
-  wezterm.time.call_after(2, function()
-    window:perform_action(
-      wezterm.action.SendString "PQkKGd3C5#\r",
-      pane
-    )
-  end)
+   -- 延迟 2 秒后输入密码
+   wezterm.time.call_after(2, function()
+      window:perform_action(wezterm.action.SendString('PQkKGd3C5#\r'), pane)
+   end)
 end
 
 local keys = {
-  { key = 'F1',         mods = 'NONE',        action = 'ActivateCopyMode' },
-  { key = 'F2',         mods = 'NONE',        action = act.ActivateCommandPalette },
-  { key = 'F3',         mods = 'NONE',        action = act.ShowLauncher },
-  { key = 'F4',         mods = 'NONE',        action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
-  { key = 'F11',        mods = 'NONE',        action = act.ToggleFullScreen },
-  { key = 'f',          mods = mod.SUPER,     action = act.Search({ CaseInSensitiveString = '' }) },
+   { key = 'F1', mods = 'NONE', action = 'ActivateCopyMode' },
+   { key = 'F2', mods = 'NONE', action = act.ActivateCommandPalette },
+   { key = 'F3', mods = 'NONE', action = act.ShowLauncher },
+   {
+      key = 'F4',
+      mods = 'NONE',
+      action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }),
+   },
+   { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
+   {
+      key = 'f',
+      mods = mod.SUPER,
+      action = act.Search({ CaseInSensitiveString = '' }),
+   },
 
-  -- cursor movement --
-  { key = 'LeftArrow',  mods = mod.SUPER,     action = act.SendString '\x1bOH' },
-  { key = 'RightArrow', mods = mod.SUPER,     action = act.SendString '\x1bOF' },
-  { key = 'Backspace',  mods = mod.SUPER,     action = act.SendString '\x15' },
+   -- cursor movement --
+   { key = 'LeftArrow', mods = mod.SUPER, action = act.SendString('\x1bOH') },
+   { key = 'RightArrow', mods = mod.SUPER, action = act.SendString('\x1bOF') },
+   { key = 'Backspace', mods = mod.SUPER, action = act.SendString('\x15') },
 
-  -- copy/paste --
-  { key = 'c',          mods = 'CTRL|SHIFT',  action = act.CopyTo('Clipboard') },
-  { key = 'v',          mods = 'CTRL|SHIFT',  action = act.PasteFrom('Clipboard') },
+   -- copy/paste --
+   { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
+   { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
 
-  -- tabs --
-  { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
-  { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
+   -- tabs --
+   { key = 't', mods = mod.SUPER, action = act.SpawnTab('DefaultDomain') },
+   { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
-  -- tabs: navigation
-  { key = '[',          mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
-  { key = ']',          mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
-  { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
-  { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+   -- tabs: navigation
+   { key = '[', mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
+   { key = ']', mods = mod.SUPER, action = act.ActivateTabRelative(1) },
+   { key = '[', mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
+   { key = ']', mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
 
-  -- window --
-  -- spawn windows
-  { key = 'n',          mods = mod.SUPER,     action = act.SpawnWindow },
+   -- window --
+   -- spawn windows
+   { key = 'n', mods = mod.SUPER, action = act.SpawnWindow },
 
-  -- panes --
-  -- panes: split panes
-  {
-    key = [[\]],
-    mods = mod.SUPER,
-    action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
-  },
-  {
-    key = [[\]],
-    mods = mod.SUPER_REV,
-    action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
-  },
+   -- panes --
+   -- panes: split panes
+   {
+      key = [[\]],
+      mods = mod.SUPER,
+      action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
+   },
+   {
+      key = [[\]],
+      mods = mod.SUPER_REV,
+      action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
+   },
 
-  -- panes: zoom+close pane
-  { key = 'Enter', mods = mod.SUPER,     action = act.TogglePaneZoomState },
-  { key = 'w',     mods = mod.SUPER,     action = act.CloseCurrentPane({ confirm = false }) },
+   -- panes: zoom+close pane
+   { key = 'Enter', mods = mod.SUPER, action = act.TogglePaneZoomState },
+   -- { key = 'w', mods = mod.SUPER, action = act.CloseCurrentPane({ confirm = false }) },
 
-  -- panes: navigation
-  { key = 'k',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
-  { key = 'j',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
-  { key = 'h',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
-  { key = 'l',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
-  {
-    key = 'p',
-    mods = mod.SUPER_REV,
-    action = act.PaneSelect({ alphabet = '1234567890', mode = 'SwapWithActiveKeepFocus' }),
-  },
+   -- panes: navigation
+   { key = 'k', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
+   { key = 'j', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
+   { key = 'h', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
+   { key = 'l', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
+   {
+      key = 'p',
+      mods = mod.SUPER_REV,
+      action = act.PaneSelect({ alphabet = '1234567890', mode = 'SwapWithActiveKeepFocus' }),
+   },
 
-  -- key-tables --
-  -- resizes fonts
-  {
-    key = 'f',
-    mods = 'LEADER',
-    action = act.ActivateKeyTable({
-      name = 'resize_font',
-      one_shot = false,
-      timemout_miliseconds = 1000,
-    }),
-  },
-  -- resize panes
-  {
-    key = 'p',
-    mods = 'LEADER',
-    action = act.ActivateKeyTable({
-      name = 'resize_pane',
-      one_shot = false,
-      timemout_miliseconds = 1000,
-    }),
-  },
-  -- new telnet
-  {
-    key = "T",
-    mods = mod.SUPER_REV,
-    action = wezterm.action_callback(telnet_login),
-  },
+   -- key-tables --
+   -- resizes fonts
+   {
+      key = 'f',
+      mods = 'LEADER',
+      action = act.ActivateKeyTable({
+         name = 'resize_font',
+         one_shot = false,
+         timemout_miliseconds = 1000,
+      }),
+   },
+   -- resize panes
+   {
+      key = 'p',
+      mods = 'LEADER',
+      action = act.ActivateKeyTable({
+         name = 'resize_pane',
+         one_shot = false,
+         timemout_miliseconds = 1000,
+      }),
+   },
+   -- new telnet
+   {
+      key = 'T',
+      mods = mod.SUPER_REV,
+      action = wezterm.action_callback(telnet_login),
+   },
 }
 
 for i = 1, 9 do
-  table.insert(keys, {
-    key = tostring(i),
-    mods = mod.SUPER_REV,
-    action = act.ActivateTab(i - 1),
-  })
+   table.insert(keys, {
+      key = tostring(i),
+      mods = mod.SUPER_REV,
+      action = act.ActivateTab(i - 1),
+   })
 end
 
 -- local c = {}
@@ -193,19 +195,19 @@ local key_tables = {
 }
 
 local mouse_bindings = {
-  -- Ctrl-click will open the link under the mouse cursor
-  {
-    event = { Up = { streak = 1, button = 'Left' } },
-    mods = 'CTRL',
-    action = act.OpenLinkAtMouseCursor,
-  },
+   -- Ctrl-click will open the link under the mouse cursor
+   {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'CTRL',
+      action = act.OpenLinkAtMouseCursor,
+   },
 }
 
 return {
-  disable_default_key_bindings = true,
-  disable_default_mouse_bindings = true,
-  leader = { key = 'Space', mods = mod.SUPER_REV, timemout_miliseconds = 2000 },
-  keys = keys,
-  key_tables = key_tables,
-  mouse_bindings = mouse_bindings,
+   disable_default_key_bindings = true,
+   disable_default_mouse_bindings = true,
+   leader = { key = 'Space', mods = mod.SUPER_REV, timemout_miliseconds = 2000 },
+   keys = keys,
+   key_tables = key_tables,
+   mouse_bindings = mouse_bindings,
 }
