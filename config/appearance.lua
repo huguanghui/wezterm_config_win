@@ -1,6 +1,6 @@
 local wezterm = require('wezterm')
 local gpu_adapters = require('utils.gpu_adapter')
-local colors = require('colors.custom')
+local colors = require('colors.campbell')
 
 return {
   front_end = 'OpenGL', -- WebGpu,OpenGL
@@ -50,7 +50,7 @@ return {
   window_close_confirmation = 'NeverPrompt',
   -- window_decorations = 'RESIZE',
   window_frame = {
-    active_titlebar_bg = '#099090',
+    active_titlebar_bg = '#0037DA',
   },
   inactive_pane_hsb = {
     saturation = 0.9,

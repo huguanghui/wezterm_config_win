@@ -40,7 +40,7 @@ local colorscheme = {
     '#002831', -- black
     '#d11c24', -- red
     '#6cbe6c', -- green
-    '#a57706', -- yellow
+    '#fabd2f', -- yellow
     '#2176c7', -- blue
     '#c61c6f', -- magenta/purple
     '#259286', -- cyan
