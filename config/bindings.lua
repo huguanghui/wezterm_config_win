@@ -128,6 +128,22 @@ local keys = {
       mods = mod.SUPER_REV,
       action = wezterm.action_callback(telnet_login),
    },
+   {
+      key = 'b',
+      mods = 'LEADER',
+      action = act.InputSelector({
+         title = '常用命令 (Button Bar)',
+         choices = {
+            { label = '查看日志', id = 'tail -f /var/log/syslog' },
+            { label = 'ax615_bm2_pwd', id = '_hVL5Wp62#}7fLox2evk' },
+         },
+         action = wezterm.action_callback(function(window, pane, id, label)
+            if id then
+               pane:send_text(id .. '\n')
+            end
+         end),
+      }),
+   },
 }
 
 for i = 1, 9 do
