@@ -50,7 +50,7 @@ end
 local _push = function(bg, fg, attribute, text)
   table.insert(__cells__, { Background = { Color = bg } })
   table.insert(__cells__, { Foreground = { Color = fg } })
-  table.insert(__cells__, { attribute = attribute })
+  table.insert(__cells__, { Attribute = attribute })
   table.insert(__cells__, { Text = text })
 end
 
