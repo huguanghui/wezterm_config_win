@@ -1,12 +1,8 @@
 local wezterm = require('wezterm')
-local platform = require('utils.platform')
-
-local font = 'JetBrainsMonoNFM Nerd Font'
-local font_size = platform().is_mac and 12 or 10
 
 return {
-   font = wezterm.font(font, { weight = 'Bold', italic = false }),
-   font_size = font_size,
+   font = wezterm.font('JetBrainsMonoNFM Nerd Font', { weight = 'Medium' }),
+   font_size = 11.0, -- 初始值，DPI 自适应会覆盖
 
    -- 禁用缺失字形的警告
    warn_about_missing_glyphs = false,
