@@ -1,7 +1,16 @@
 local wezterm = require('wezterm')
 
 return {
-   font = wezterm.font('JetBrainsMonoNFM Nerd Font', { weight = 'Medium' }),
+   font_rules = {
+      {
+         intensity = 'Normal',
+         italic = false,
+         font = wezterm.font_with_fallback({
+            { family = 'JetBrainsMonoNFM Nerd Font', weight = 'Medium' },
+            { family = 'Microsoft YaHei' },
+         }),
+      },
+   },
    font_size = 11.0, -- 初始值，DPI 自适应会覆盖
 
    -- 禁用缺失字形的警告

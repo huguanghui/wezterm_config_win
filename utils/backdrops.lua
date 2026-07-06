@@ -1,6 +1,6 @@
 local wezterm = require('wezterm')
 local platform = require('utils.platform')()
-local colors = require('colors.custom')
+local colors = require('colors.campbell')
 
 -- Seeding random numbers before generating for use
 -- Known issue with lua math library
@@ -56,7 +56,7 @@ function BackDrops:_set_opt(window)
         source = { Color = colors.background },
         height = '100%',
         width = '100%',
-        opacity = 0.96,
+        opacity = 0.85,
       },
     },
   }
@@ -66,7 +66,7 @@ end
 function BackDrops:choices()
   local choices = {}
   for idx, file in ipairs(self.files) do
-    local name = file:match('([^' .. PATH_SEP .. '] +)$')
+    local name = file:match('([^' .. PATH_SEP .. ']+)$')
     table.insert(choices, {
       id = tostring(idx),
       label = name,

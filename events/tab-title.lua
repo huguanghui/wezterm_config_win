@@ -1,4 +1,5 @@
 local wezterm = require('wezterm')
+local campbell = require('colors.campbell')
 
 local nf = wezterm.nerdfonts
 
@@ -12,9 +13,9 @@ local M = {}
 local __cells__ = {}
 
 local colors = {
-  default = { bg = '#45475a', fg = '#1c1b19' },
-  is_active = { bg = '#7FB4CA', fg = '#11111b' },
-  hover = { bg = '#587d8c', fg = '#1c1b19' },
+  default = { bg = campbell.tab_bar.inactive_tab.bg_color, fg = campbell.tab_bar.inactive_tab.fg_color },
+  is_active = { bg = campbell.tab_bar.active_tab.bg_color, fg = campbell.tab_bar.active_tab.fg_color },
+  hover = { bg = campbell.tab_bar.inactive_tab_hover.bg_color, fg = campbell.tab_bar.inactive_tab_hover.fg_color },
 }
 
 local _set_process_name = function(s)

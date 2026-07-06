@@ -24,7 +24,7 @@ end
 
 M.setup = function()
 ---@diagnostic disable-next-line: unused-local
-  wezterm.on('update-right-status', function(window, _pane)
+  wezterm.on('update-left-status', function(window, _pane)
     __cells__ = {}
 
     local name = window:active_key_table()

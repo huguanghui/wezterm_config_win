@@ -1,6 +1,5 @@
 local wezterm = require('wezterm')
 local platform = require('utils.platform')()
-local backdrops = require('utils.backdrops')
 local env = require('utils.env')
 local act = wezterm.action
 
@@ -39,11 +38,21 @@ local keys = {
    { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo('Clipboard') },
    { key = 'v', mods = 'CTRL|SHIFT', action = act.PasteFrom('Clipboard') },
 
+   -- scroll --
+   { key = 'PageUp', mods = 'CTRL|SHIFT', action = act.ScrollByPage(-1) },
+   { key = 'PageDown', mods = 'CTRL|SHIFT', action = act.ScrollByPage(1) },
+   { key = 'UpArrow', mods = 'CTRL|SHIFT', action = act.ScrollByLine(-1) },
+   { key = 'DownArrow', mods = 'CTRL|SHIFT', action = act.ScrollByLine(1) },
+
+   -- quick select --
+   { key = 'Space', mods = 'CTRL|SHIFT', action = act.QuickSelect },
+
    -- tabs --
    { key = 't', mods = mod.SUPER, action = act.SpawnTab('DefaultDomain') },
    { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
    -- tabs: navigation
+   { key = '`', mods = mod.SUPER, action = act.ActivateLastTab },
    { key = '[', mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
    { key = ']', mods = mod.SUPER, action = act.ActivateTabRelative(1) },
    { key = '[', mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
@@ -89,7 +98,7 @@ local keys = {
       action = act.ActivateKeyTable({
          name = 'resize_font',
          one_shot = false,
-         timemout_miliseconds = 1000,
+         timeout_miliseconds = 1000,
       }),
    },
    -- resize panes
@@ -99,8 +108,21 @@ local keys = {
       action = act.ActivateKeyTable({
          name = 'resize_pane',
          one_shot = false,
-         timemout_miliseconds = 1000,
+         timeout_miliseconds = 1000,
       }),
+   },
+   {
+      key = 'r',
+      mods = 'LEADER',
+      ---@diagnostic disable-next-line: unused-local
+      action = wezterm.action_callback(function(window, _pane)
+         require('utils.backdrops'):random(window)
+      end),
+   },
+   {
+      key = 'R',
+      mods = 'LEADER',
+      action = act.ReloadConfiguration,
    },
    {
       key = 'b',
@@ -111,7 +133,8 @@ local keys = {
             { label = '查看日志', id = 'tail -f /var/log/syslog' },
             { label = 'ax615_bm2_pwd', id = env:get('ax615_bm2_pwd') },
          },
-         action = wezterm.action_callback(function(window, pane, id, label)
+         ---@diagnostic disable-next-line: unused-local
+         action = wezterm.action_callback(function(_window, pane, id, _label)
             if id then
                pane:send_text(id .. '\n')
             end
@@ -121,56 +144,26 @@ local keys = {
 }
 
 for i = 1, 9 do
+   -- Alt+Ctrl+1~9 跳转 Tab
    table.insert(keys, {
       key = tostring(i),
       mods = mod.SUPER_REV,
       action = act.ActivateTab(i - 1),
    })
+   -- Alt+1~9 跳转 Tab
+   table.insert(keys, {
+      key = tostring(i),
+      mods = mod.SUPER,
+      action = act.ActivateTab(i - 1),
+   })
 end
-
--- local c = {}
--- -- 取消所有默认的热键
--- c.disable_default_key_bindings = true
--- local act = wezterm.action
--- c.keys = {
---   -- Ctrl+Shift+Tab 遍历 tab
---   { key = 'Tab', mods = 'SHIFT|CTRL', action = act.ActivateTabRelative(1) },
---   -- F11 切换全屏
---   { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
---   -- Ctrl+Shift++ 字体增大
---   { key = '+', mods = 'SHIFT|CTRL', action = act.IncreaseFontSize },
---   -- Ctrl+Shift+- 字体减小
---   { key = '_', mods = 'SHIFT|CTRL', action = act.DecreaseFontSize },
---   -- Ctrl+Shift+C 复制选中区域
---   { key = 'C', mods = 'SHIFT|CTRL', action = act.CopyTo 'Clipboard' },
---   -- Ctrl+Shift+N 新窗口
---   { key = 'N', mods = 'SHIFT|CTRL', action = act.SpawnWindow },
---   -- Ctrl+Shift+T 新 tab
---   { key = 'T', mods = 'SHIFT|CTRL', action = act.ShowLauncher },
---   -- Ctrl+Shift+Enter 显示启动菜单
---   { key = 'Enter', mods = 'SHIFT|CTRL', action = act.ShowLauncherArgs { flags = 'FUZZY|TABS|LAUNCH_MENU_ITEMS' } },
---   -- Ctrl+Shift+V 粘贴剪切板的内容
---   { key = 'V', mods = 'SHIFT|CTRL', action = act.PasteFrom 'Clipboard' },
---   -- Ctrl+Shift+W 关闭 tab 且不进行确认
---   { key = 'W', mods = 'SHIFT|CTRL', action = act.CloseCurrentTab{ confirm = false } },
---   -- Ctrl+Shift+PageUp 向上滚动一页
---   { key = 'PageUp', mods = 'SHIFT|CTRL', action = act.ScrollByPage(-1) },
---   -- Ctrl+Shift+PageDown 向下滚动一页
---   { key = 'PageDown', mods = 'SHIFT|CTRL', action = act.ScrollByPage(1) },
---   -- Ctrl+Shift+UpArrow 向上滚动一行
---   { key = 'UpArrow', mods = 'SHIFT|CTRL', action = act.ScrollByLine(-1) },
---   -- Ctrl+Shift+DownArrow 向下滚动一行
---   { key = 'DownArrow', mods = 'SHIFT|CTRL', action = act.ScrollByLine(1) },
--- }
-
--- return c
 
 -- stylua: ignore
 local key_tables = {
   resize_font = {
     { key = 'k',      action = act.IncreaseFontSize },
     { key = 'j',      action = act.DecreaseFontSize },
-    { key = 'r',      action = act.ResetFontSize },
+    { key = '0',      action = act.ResetFontSize },
     { key = 'Escape', action = 'PopKeyTable' },
     { key = 'q',      action = 'PopKeyTable' },
   },
@@ -196,7 +189,7 @@ local mouse_bindings = {
 return {
    disable_default_key_bindings = true,
    disable_default_mouse_bindings = true,
-   leader = { key = 'Space', mods = mod.SUPER_REV, timemout_miliseconds = 2000 },
+   leader = { key = 'Space', mods = mod.SUPER_REV, timeout_miliseconds = 1000 },
    keys = keys,
    key_tables = key_tables,
    mouse_bindings = mouse_bindings,

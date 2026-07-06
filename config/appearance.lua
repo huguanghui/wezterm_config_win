@@ -3,11 +3,11 @@ local gpu_adapters = require('utils.gpu_adapter')
 local colors = require('colors.campbell')
 
 return {
-  front_end = 'OpenGL', -- WebGpu,OpenGL
+  front_end = 'WebGpu', -- WebGpu,OpenGL
   webgpu_preferred_adapter = gpu_adapters:pick_best(),
   webgpu_power_preference = 'HighPerformance',
 
-  animation_fps = 60,
+  animation_fps = 30,
   cursor_blink_rate = 0,
 
   -- color scheme
@@ -47,10 +47,11 @@ return {
     top = 12,
     bottom = 7,
   },
-  window_close_confirmation = 'NeverPrompt',
+  window_close_confirmation = 'AlwaysPrompt',
   -- window_decorations = 'RESIZE',
   window_frame = {
     active_titlebar_bg = '#0037DA',
+    inactive_titlebar_bg = '#1A1F26',
   },
   inactive_pane_hsb = {
     saturation = 0.9,
