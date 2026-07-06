@@ -72,7 +72,7 @@ M.setup = function()
       fg = colors.hover.fg
     else
       bg = colors.default.bg
-      bg = colors.default.fg
+      fg = colors.default.fg
     end
 
     local has_unseen_output = false

@@ -1,6 +1,7 @@
 local wezterm = require('wezterm')
 local platform = require('utils.platform')()
 local backdrops = require('utils.backdrops')
+local env = require('utils.env')
 local act = wezterm.action
 
 local mod = {}
@@ -108,7 +109,7 @@ local keys = {
          title = '常用命令 (Button Bar)',
          choices = {
             { label = '查看日志', id = 'tail -f /var/log/syslog' },
-            { label = 'ax615_bm2_pwd', id = '_hVL5Wp62#}7fLox2evk' },
+            { label = 'ax615_bm2_pwd', id = env:get('ax615_bm2_pwd') },
          },
          action = wezterm.action_callback(function(window, pane, id, label)
             if id then
