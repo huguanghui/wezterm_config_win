@@ -8,7 +8,6 @@ M.setup = function()
 
       local dims = window:get_dimensions()
       local dpi = dims.dpi or 96
-      -- wezterm.log_info('dpi-font: window-config-reloaded triggered', 'dpi=', dpi, 'dims=', dims)
 
       local font_size = 10.0
       if dpi == 192 then
@@ -23,8 +22,14 @@ M.setup = function()
          font_size = 14.0
       end
 
-      -- wezterm.log_info('dpi-font: setting override font_size =', font_size)
+      -- 主字体大小
       overrides.font_size = font_size
+
+      -- 窗口标签（Tab Bar）字体大小
+      local frame = overrides.window_frame or {}
+      overrides.window_frame = frame
+      frame.font_size = font_size
+
       window:set_config_overrides(overrides)
    end)
 end
