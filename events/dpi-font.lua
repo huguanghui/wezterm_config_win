@@ -11,10 +11,14 @@ M.setup = function()
       -- wezterm.log_info('dpi-font: window-config-reloaded triggered', 'dpi=', dpi, 'dims=', dims)
 
       local font_size = 10.0
-      if dpi >= 192 then
+      if dpi == 192 then
+         font_size = 11.0
+      elseif dpi > 192 then
          font_size = 10.0
       elseif dpi >= 120 then
          font_size = 11.0
+      elseif dpi == 96 then
+         font_size = 16.0
       else
          font_size = 14.0
       end
