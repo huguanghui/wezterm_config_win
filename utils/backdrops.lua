@@ -19,6 +19,30 @@ local BackDrops = {}
 BackDrops.__index = BackDrops
 
 
+--- Return the background layer list for a given wallpaper file.
+--- Pure: does not touch `wezterm.GLOBAL`.
+--- When `file` is nil (no backdrops available) only the dark overlay is
+--- returned, so the config still renders a plain scheme background.
+--- Layer order matters: image first (back), tint overlay second (front).
+function BackDrops.layers(file)
+  local layers = {
+    {
+      source = { Color = colors.background },
+      height = '100%',
+      width = '100%',
+      opacity = 0.85,
+    },
+  }
+  if file then
+    table.insert(layers, 1, {
+      source = { File = file },
+      horizontal_align = 'Center',
+    })
+  end
+  return layers
+end
+
+
 --- Initialise backdrop controller
 ---@private
 function BackDrops:init()
@@ -40,27 +64,22 @@ end
 ---   This throws a coroutine error if the function is invoked in outside of `wezterm.lua` in the -
 ---   initial load of the Terminal config.
 function BackDrops:set_files()
-  self.files = wezterm.read_dir(wezterm.config_dir .. PATH_SEP .. 'backdrops')
+  local dir = wezterm.config_dir .. PATH_SEP .. 'backdrops'
+  local ok, files = pcall(wezterm.read_dir, dir)
+  self.files = (ok and files) or {}
+
+  if #self.files == 0 then
+    wezterm.log_info('backdrops: no images found in ' .. dir)
+  end
+
   wezterm.GLOBAL.background = self.files[1]
   return self
 end
 
 function BackDrops:_set_opt(window)
-  local opts = {
-    background = {
-      {
-        source = { File = wezterm.GLOBAL.background },
-        horizontal_align = 'Center',
-      },
-      {
-        source = { Color = colors.background },
-        height = '100%',
-        width = '100%',
-        opacity = 0.85,
-      },
-    },
-  }
-  window:set_config_overrides(opts)
+  window:set_config_overrides({
+    background = self.layers(wezterm.GLOBAL.background),
+  })
 end
 
 function BackDrops:choices()
@@ -76,8 +95,12 @@ function BackDrops:choices()
 end
 
 function BackDrops:random(window)
-  self.current_idx = math.random(#self.files)
-  wezterm.GLOBAL.background = self.files[self.current_idx]
+  if #self.files == 0 then
+    wezterm.GLOBAL.background = nil
+  else
+    self.current_idx = math.random(#self.files)
+    wezterm.GLOBAL.background = self.files[self.current_idx]
+  end
 
   if window ~= nil then
     self:_set_opt(window)

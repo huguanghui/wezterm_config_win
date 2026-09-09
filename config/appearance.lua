@@ -1,6 +1,7 @@
 local wezterm = require('wezterm')
 local gpu_adapters = require('utils.gpu_adapter')
 local colors = require('colors.campbell')
+local backdrops = require('utils.backdrops')
 
 return {
   front_end = 'WebGpu', -- WebGpu,OpenGL
@@ -13,20 +14,9 @@ return {
   -- color scheme
   colors = colors,
 
-  -- background
-  background = {
-    {
-      source = { File = wezterm.GLOBAL.background },
-      horizontal_align = 'Center',
-    },
-    {
-      source = { Color = colors.background },
-      height = '100%',
-      width = '100%',
-      opacity = 0.85,
-      vertical_align = 'Bottom',
-    },
-  },
+  -- background: 壁纸层 + 半透明深色遮罩,定义复用 utils/backdrops.layers
+  -- (backdrops 目录为空时 layers() 只返回纯色遮罩,不再引用 nil 文件)
+  background = backdrops.layers(wezterm.GLOBAL.background),
 
   -- scrollbar
   enable_scroll_bar = true,
