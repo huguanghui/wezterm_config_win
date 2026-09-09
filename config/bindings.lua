@@ -179,7 +179,44 @@ local key_tables = {
 }
 
 local mouse_bindings = {
-   -- Ctrl-click will open the link under the mouse cursor
+   -- 左键:单元格选择 / 拖动扩展 / 松开完成
+   {
+      event = { Down = { streak = 1, button = 'Left' } },
+      mods = 'NONE',
+      action = act.SelectTextAtMouseCursor('Cell'),
+   },
+   {
+      event = { Drag = { streak = 1, button = 'Left' } },
+      mods = 'NONE',
+      action = act.ExtendSelectionToMouseCursor('Cell'),
+   },
+   {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'NONE',
+      action = act.CompleteSelectionOrOpenLinkAtMouseCursor('ClipboardAndPrimarySelection'),
+   },
+   -- 双击选词 / 三击选行
+   {
+      event = { Down = { streak = 2, button = 'Left' } },
+      mods = 'NONE',
+      action = act.SelectTextAtMouseCursor('Word'),
+   },
+   {
+      event = { Drag = { streak = 2, button = 'Left' } },
+      mods = 'NONE',
+      action = act.ExtendSelectionToMouseCursor('Word'),
+   },
+   {
+      event = { Down = { streak = 3, button = 'Left' } },
+      mods = 'NONE',
+      action = act.SelectTextAtMouseCursor('Line'),
+   },
+   {
+      event = { Drag = { streak = 3, button = 'Left' } },
+      mods = 'NONE',
+      action = act.ExtendSelectionToMouseCursor('Line'),
+   },
+   -- Ctrl+左键:打开链接(保留现有)
    {
       event = { Up = { streak = 1, button = 'Left' } },
       mods = 'CTRL',
