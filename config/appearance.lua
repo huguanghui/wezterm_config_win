@@ -40,8 +40,9 @@ return {
   window_close_confirmation = 'AlwaysPrompt',
   -- window_decorations = 'RESIZE',
   window_frame = {
-    active_titlebar_bg = '#0037DA',
-    inactive_titlebar_bg = '#1A1F26',
+    -- 标题栏跟随主题:与标签强调色同源,切主题(custom.lua)时自动一致
+    active_titlebar_bg = colors.tab_bar.active_tab.bg_color,
+    inactive_titlebar_bg = colors.tab_bar.inactive_tab.bg_color,
   },
   inactive_pane_hsb = {
     saturation = 0.9,
