@@ -24,21 +24,17 @@ local _set_process_name = function(s)
 end
 
 local _set_title = function(process_name, base_title, max_width, inset)
-  local title
   inset = inset or 6
 
-  if process_name:len() > 0 then
+  local title = base_title
+  if process_name ~= '' then
     title = process_name .. ' ~ ' .. base_title
-  else
-    title = base_title
   end
 
-  if title:len() > max_width - inset then
-    local diff = title:len() - max_width + inset
-    title = wezterm.truncate_right(title, title:len() - diff)
-  end
-
-  return title
+  -- truncate_right 按显示宽度(单元格)计算: CJK 宽字符记 2 格,ASCII 记 1 格,
+  -- 所以不需要再用 title:len()(字节数)自行换算。
+  -- math.max 防止窗口极窄时传入负宽度。
+  return wezterm.truncate_right(title, math.max(max_width - inset, 0))
 end
 
 local _check_if_admin = function(p)
