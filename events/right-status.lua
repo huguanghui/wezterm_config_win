@@ -80,15 +80,15 @@ local _set_battery = function()
   _push(charge, icon, colors.battery_fg, colors.battery_bg, false)
 end
 
-M.setup = function()
----@diagnostic disable-next-line: unused-local
-  wezterm.on('update-right-status', function(window, _pane)
-    __cells__ = {}
-    _set_date()
-    _set_battery()
+--- 渲染右侧状态栏(日期 + 电池)
+--- 由 `events.status` 在单个 `update-status` 回调中统一调用
+---@return string
+M.render = function()
+  __cells__ = {}
+  _set_date()
+  _set_battery()
 
-    window:set_right_status(wezterm.format(__cells__))
-  end)
+  return wezterm.format(__cells__)
 end
 
 return M

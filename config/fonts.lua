@@ -1,6 +1,13 @@
 local wezterm = require('wezterm')
 
 return {
+   -- 基础字体:所有样式(含加粗/斜体)的回退链,保证 CJK 字形有兜底。
+   -- 与下方 font_rules 的 Normal 规则保持一致,避免不同样式的字体渲染不一致。
+   font = wezterm.font_with_fallback({
+      { family = 'JetBrainsMonoNFM Nerd Font', weight = 'Medium' },
+      { family = 'Microsoft YaHei' },
+   }),
+
    font_rules = {
       {
          intensity = 'Normal',
