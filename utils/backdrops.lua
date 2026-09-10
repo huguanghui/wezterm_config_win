@@ -50,9 +50,10 @@ function BackDrops:init()
     current_idx = 1,
     files = {},
   }
-  local backdrops = setmetatable(inital, self)
-  wezterm.GLOBAL.background = nil
-  return backdrops
+  -- NOTE: deliberately does not reset `wezterm.GLOBAL.background` here --
+  -- it persists across reloads and is cleared only by a fresh process.
+  -- Resetting it would defeat `pick(true)` (see `BackDrops:pick`).
+  return setmetatable(inital, self)
 end
 
 --- MUST BE RUN BEFORE ALL OTHER `BackDrops` functions
@@ -72,7 +73,8 @@ function BackDrops:set_files()
     wezterm.log_info('backdrops: no images found in ' .. dir)
   end
 
-  wezterm.GLOBAL.background = self.files[1]
+  -- NOTE: does not touch `wezterm.GLOBAL.background` -- that is `pick()`'s job.
+  -- Writing here would clobber the wallpaper kept across reloads.
   return self
 end
 
@@ -94,13 +96,33 @@ function BackDrops:choices()
   return choices
 end
 
-function BackDrops:random(window)
+--- Set the active wallpaper into `wezterm.GLOBAL.background`.
+---
+--- `wezterm.GLOBAL` persists across config reloads (but is empty in a fresh
+--- process), so this is what makes "randomize once per launch" work.
+---
+--- @param wallpaper_only boolean? when true, never overwrite an already chosen
+---   wallpaper. Pass true on config (re)load so `Leader R` / file-save reloads
+---   keep the current backdrop; omit it to force a new random pick.
+--- @return string|nil the wallpaper now in effect
+function BackDrops:pick(wallpaper_only)
+  if wallpaper_only and wezterm.GLOBAL.background ~= nil then
+    return wezterm.GLOBAL.background
+  end
+
   if #self.files == 0 then
     wezterm.GLOBAL.background = nil
-  else
-    self.current_idx = math.random(#self.files)
-    wezterm.GLOBAL.background = self.files[self.current_idx]
+    return nil
   end
+
+  self.current_idx = math.random(#self.files)
+  wezterm.GLOBAL.background = self.files[self.current_idx]
+  return wezterm.GLOBAL.background
+end
+
+--- Pick a new random wallpaper and apply it to `window`.
+function BackDrops:random(window)
+  self:pick()
 
   if window ~= nil then
     self:_set_opt(window)
