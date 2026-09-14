@@ -132,6 +132,8 @@ local keys = {
          choices = {
             { label = '查看日志', id = 'tail -f /var/log/syslog' },
             { label = 'ax615_bm2_pwd', id = env:get('ax615_bm2_pwd') },
+            { label = 't41_bm2_pwd0', id = env:get('t41_bm2_pwd0') },
+            { label = 't41_bm2_pwd1', id = env:get('t41_bm2_pwd1') },
             { label = 'bm3_pwd', id = env:get('bm3_pwd') },
          },
          ---@diagnostic disable-next-line: unused-local
