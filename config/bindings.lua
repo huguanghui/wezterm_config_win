@@ -135,6 +135,7 @@ local keys = {
             { label = 't41_bm2_pwd0', id = env:get('t41_bm2_pwd0') },
             { label = 't41_bm2_pwd1', id = env:get('t41_bm2_pwd1') },
             { label = 'bm3_pwd', id = env:get('bm3_pwd') },
+            { label = '822pro_pwd', id = env:get('822pro_pwd') },
          },
          ---@diagnostic disable-next-line: unused-local
          action = wezterm.action_callback(function(_window, pane, id, _label)
