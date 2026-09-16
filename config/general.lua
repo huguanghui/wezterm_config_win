@@ -32,9 +32,19 @@ return {
       format = '$1',
       highlight = 1,
     },
-    -- Then handle URLs not wrapped in brackets
+    -- Then handle URLs not wrapped in brackets that
+    -- 1) contain a balanced trailing parenthesis, e.g.
+    --    https://en.wikipedia.org/wiki/Foo_(bar)
     {
-      regex = '\\b\\w+://\\S+[)/a-zA-Z0-9-]+',
+      regex = '\\b\\w+://[^\\s()]*\\(\\S*\\)(?=\\s|$|[^_/a-zA-Z0-9-])',
+      format = '$0',
+    },
+    -- 2) end on a URL-safe character, never on punctuation.
+    --    NOTE: WezTerm ranks candidate matches by length (longest wins), not by
+    --    rule order. The old greedy class `[)/a-zA-Z0-9-]` allowed a trailing
+    --    ")" and so beat the "(URL)" rule above, leaking the ")" into the link.
+    {
+      regex = '\\b\\w+://\\S+[_/a-zA-Z0-9-]',
       format = '$0',
     },
     -- implicit mailto link
